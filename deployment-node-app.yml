@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: my-nodedb-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-nodedb-app
+  template:
+    metadata:
+      labels:
+        app: my-nodedb-app
+    spec:
+      containers:
+        - name : nodedb-app
+          image: philippaul/node-mongo-db:02
+        - name : mongodb
+          image: mongo:latest
+
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  # Unique key of the Service instance
+  name: service-my-nodedb-app
+spec:
+  ports:
+    # Accept traffic sent to port 80
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    # Loadbalance traffic across Pods matching
+    # this label selector
+    app: my-nodedb-app
+  # Create an HA proxy in the cloud provider
+  # with an External IP address - *Only supported
+  # by some cloud providers*
+  type: NodePort

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: mongo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-app
+  template:
+    metadata:
+      labels:
+        app: mongo-app
+    spec:
+      containers:
+        - name : mongo-app
+          image: mongo:6
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-vol
+      volumes:
+        - name : mongo-vol
+          persistentVolumeClaim:
+            claimName: host-pvc
+
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  # Unique key of the Service instance
+  name: service-mongodb
+spec:
+  ports:
+    # Accept traffic sent to port 80
+    - name: tcp
+      port: 27017
+      targetPort: 27017
+  selector:
+    app: mongo-app
