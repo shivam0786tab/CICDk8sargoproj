@@ -84,10 +84,10 @@ pipeline {
                         cat node-app.yml
                         git config user.name "$GIT_USERNAME"
                         git config user.email "test@email.com"
-						git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests.git
+						git remote set-url origin https://github.com/shivam0786tab/kubernetesmanifests.git
                         git add node-app.yml
                         git commit -m "Updated image tag to $IMAGE_TAG | Jenkins Pipeline" || echo "No changes to commit"
-                        git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests.git HEAD:main
+                        git push https://github.com/shivam0786tab/kubernetesmanifests.git HEAD:main
                         """
                     }
                 }
