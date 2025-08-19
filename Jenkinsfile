@@ -81,11 +81,11 @@ pipeline {
                         # Replace image tag in a more generic way
                         sed -i "s|image: shiv0786/web-app:.*|image: shiv0786/web-app:${env.IMAGE_TAG}|g" node-app.yaml
 
-                        cat node-app.yaml
+                        cat node-app.yml
                         git config user.name "$GIT_USERNAME"
                         git config user.email "test@email.com"
 						git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests.git
-                        git add node-app.yaml
+                        git add node-app.yml
                         git commit -m "Updated image tag to $IMAGE_TAG | Jenkins Pipeline" || echo "No changes to commit"
                         git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests.git HEAD:main
                         """
