@@ -43,10 +43,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh '''
+                    sh """
                     echo 'Building Docker Image...'
-                    docker build -t shiv0786/web-app:${IMAGE_TAG} .
-                    '''
+                    docker build -t shiv0786/web-app:${env.IMAGE_TAG} .
+                    """
                 }
             }
         }
@@ -54,10 +54,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh '''
+                    sh """
                     echo 'Pushing Docker Image to Docker Hub...'
-                    docker push shiv0786/web-app:${IMAGE_TAG}
-                    '''
+                    docker push shiv0786/web-app:${env.IMAGE_TAG}
+                    """
                 }
             }
         }
@@ -74,20 +74,21 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'git-cred-id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                        sh '''
+                        sh """
                         echo "Updating K8s deployment YAML..."
                         cat node-app.yaml
 
                         # Replace image tag in a more generic way
-                        sed -i "s|image: shiv0786/web-app:.*|image: shiv0786/web-app:$IMAGE_TAG|g" node-app.yaml
+                        sed -i "s|image: shiv0786/web-app:.*|image: shiv0786/web-app:${env.IMAGE_TAG}|g" node-app.yaml
 
                         cat node-app.yaml
                         git config user.name "$GIT_USERNAME"
                         git config user.email "test@email.com"
+						git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests.git
                         git add node-app.yaml
                         git commit -m "Updated image tag to $IMAGE_TAG | Jenkins Pipeline" || echo "No changes to commit"
                         git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests.git HEAD:main
-                        '''
+                        """
                     }
                 }
             }
