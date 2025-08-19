@@ -76,7 +76,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'git-cred-id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         sh """
                         echo "Updating K8s deployment YAML..."
-                        cat node-app.yaml
+                        cat node-app.yml
 
                         # Replace image tag in a more generic way
                         sed -i "s|image: shiv0786/web-app:.*|image: shiv0786/web-app:${env.IMAGE_TAG}|g" node-app.yaml
