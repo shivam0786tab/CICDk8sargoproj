@@ -73,7 +73,6 @@ pipeline {
         stage('Update K8s Manifest and Push') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'git-cred-id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         sh """
                         echo "Updating K8s deployment YAML..."
                         cat node-app.yml
@@ -82,16 +81,14 @@ pipeline {
                         sed -i "s|image: shiv0786/web-app:.*|image: shiv0786/web-app:${env.IMAGE_TAG}|g" node-app.yml
 
                         cat node-app.yml
-                        git config user.name "$GIT_USERNAME"
+                        git config user.name "shivam"
                         git config user.email "test@email.com"
 						git remote set-url origin https://github.com/shivam0786tab/kubernetesmanifests.git
                         git add node-app.yml
                         git commit -m "Updated image tag to $IMAGE_TAG | Jenkins Pipeline" || echo "No changes to commit"
                         git push https://github.com/shivam0786tab/kubernetesmanifests.git HEAD:main
                         """
-                    }
                 }
             }
-        }
     }
 }
