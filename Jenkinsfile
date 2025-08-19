@@ -65,7 +65,7 @@ pipeline {
         stage('Checkout K8s Manifest Repo') {
             steps {
                 git credentialsId: 'git-cred-id', 
-                    url: 'https://github.com/shivam0786tab/kubernetesmanifests.git',
+                    url: 'https://github.com/shivam0786tab/kubernetesmanifests',
                     branch: 'main'
             }
         }
@@ -88,7 +88,7 @@ pipeline {
                 git config user.email "test@email.com"
 
                 # Set remote using credentials securely
-                git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests.git
+                git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/shivam0786tab/kubernetesmanifests
 
                 # Commit and push
                 git add node-app.yml
