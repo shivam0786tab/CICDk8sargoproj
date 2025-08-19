@@ -79,7 +79,7 @@ pipeline {
                         cat node-app.yml
 
                         # Replace image tag in a more generic way
-                        sed -i "s|image: shiv0786/web-app:.*|image: shiv0786/web-app:${env.IMAGE_TAG}|g" node-app.yaml
+                        sed -i "s|image: shiv0786/web-app:.*|image: shiv0786/web-app:${env.IMAGE_TAG}|g" node-app.yml
 
                         cat node-app.yml
                         git config user.name "$GIT_USERNAME"
